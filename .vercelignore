@@ -1,0 +1,5 @@
+# Keep the Vercel upload to the frontend only — the .NET backend deploys to MonsterASP.NET.
+backend
+*.xlsx
+BACKEND_ARCHITECTURE.md
+THEME.md

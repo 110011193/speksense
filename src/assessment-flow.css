@@ -1,0 +1,383 @@
+.flow-page {
+  min-height: 100vh;
+}
+
+.flow-page--centered {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.flow-main--center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.flow-instructions-panel {
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.flow-instructions-panel .flow-title,
+.flow-instructions-panel .flow-sub,
+.flow-instructions-panel .flow-meta,
+.flow-instructions-panel .flow-section-label {
+  text-align: center;
+}
+
+.flow-instructions-panel .flow-instructions {
+  text-align: left;
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  padding-left: 1.5rem;
+  line-height: 1.65;
+}
+
+.flow-instructions-panel .flow-actions {
+  justify-content: center;
+  gap: 1rem;
+}
+
+.flow-instructions-panel .flow-actions .flow-cta-primary {
+  margin-left: 0;
+}
+
+.flow-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  position: relative;
+  z-index: 500;
+}
+
+.flow-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.flow-header-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.flow-header-save {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.flow-save-status {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.flow-back {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dash-charcoal);
+  text-decoration: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+}
+
+.flow-back:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.flow-header-progress {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.flow-header-sub:not(:has(.flow-header-progress)) {
+  justify-content: flex-end;
+}
+
+.flow-progress-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(30, 30, 30, 0.55);
+  margin-bottom: 0.35rem;
+}
+
+.flow-progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.1);
+  overflow: hidden;
+}
+
+.flow-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--dash-yellow);
+  transition: width 0.2s ease;
+}
+
+.flow-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.flow-card {
+  padding: 2rem 1.75rem;
+  border-radius: var(--r-lg);
+}
+
+.flow-card--center {
+  text-align: center;
+}
+
+.flow-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--dash-charcoal);
+}
+
+.flow-sub {
+  margin: 0 0 1rem;
+  color: rgba(30, 30, 30, 0.65);
+  line-height: 1.5;
+}
+
+.flow-meta {
+  font-size: 0.875rem;
+  color: rgba(30, 30, 30, 0.5);
+  margin: 0 0 1.5rem;
+}
+
+.flow-section-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(30, 30, 30, 0.45);
+  margin: 0 0 0.75rem;
+}
+
+.flow-instructions {
+  margin: 0 0 2rem;
+  padding-left: 1.25rem;
+  color: var(--dash-charcoal);
+  line-height: 1.6;
+}
+
+.flow-instructions li {
+  margin-bottom: 0.5rem;
+}
+
+.flow-question {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  line-height: 1.4;
+  color: var(--dash-charcoal);
+}
+
+.flow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.flow-actions--center {
+  justify-content: center;
+}
+
+.flow-cta-primary {
+  margin-left: auto;
+}
+
+.flow-error {
+  color: #b42318;
+  font-size: 0.875rem;
+  margin: 1rem 0 0;
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.survey-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 44px;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--surface-glass);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  font-weight: var(--fw-medium);
+  color: var(--dash-charcoal);
+  transition: background var(--t-base), border-color var(--t-base), box-shadow var(--t-base);
+}
+
+.survey-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.survey-option:hover {
+  border-color: var(--border);
+}
+
+.survey-option:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.survey-option--selected {
+  background: var(--dash-yellow);
+  border-color: var(--brand-yellow-strong);
+  font-weight: var(--fw-semibold);
+}
+
+.survey-single-page {
+  max-width: 42rem;
+}
+
+.survey-single-block {
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(30, 30, 30, 0.08);
+}
+
+.survey-single-block:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.flow-card--behavioral {
+  max-width: 42rem;
+}
+
+.behavioral-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.behavioral-section {
+  color: var(--dash-charcoal);
+}
+
+.flow-question--behavioral {
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  line-height: 1.45;
+}
+
+.survey-options--behavioral {
+  gap: 0.75rem;
+}
+
+.survey-option--behavioral {
+  align-items: flex-start;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  line-height: 1.45;
+}
+
+.survey-option-key {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.06);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.survey-option--selected .survey-option-key {
+  background: var(--brand-charcoal);
+  color: #fff;
+}
+
+.survey-option-text {
+  flex: 1;
+  font-weight: 500;
+}
+
+.survey-textarea {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(30, 30, 30, 0.12);
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 120px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.survey-textarea:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Phase F — responsive taking flow (no horizontal overflow at 375px). */
+@media (max-width: 600px) {
+  .flow-main {
+    padding: 1rem;
+  }
+  .flow-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: var(--r-md);
+  }
+  .flow-title {
+    font-size: 1.3rem;
+  }
+  .flow-question {
+    font-size: 1.1rem;
+  }
+  .flow-actions {
+    gap: 0.5rem;
+  }
+  .flow-actions .flow-cta-primary {
+    margin-left: 0;
+  }
+  .flow-actions > a,
+  .flow-actions > button {
+    flex: 1 1 auto;
+    text-align: center;
+    min-height: 44px;
+  }
+}

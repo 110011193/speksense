@@ -1,0 +1,231 @@
+.assessments-page .assessments-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.assessments-hero {
+  margin-bottom: 1.75rem;
+}
+
+.assessments-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+  margin: 0 0 0.35rem;
+}
+
+.assessments-sub {
+  margin: 0;
+  color: rgba(30, 30, 30, 0.65);
+  font-size: 0.95rem;
+}
+
+.assessments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.assessment-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.assessment-card {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  border-radius: var(--r-md);
+  padding: 1.25rem 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+
+.assessment-card-link:hover .assessment-card {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.assessment-card--completed {
+  opacity: 0.75;
+}
+
+.assessment-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.assessment-status {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.08);
+  color: var(--dash-charcoal);
+}
+
+.assessment-status--in_progress {
+  background: rgba(255, 215, 71, 0.35); /* canonical --brand-yellow #ffd747 */
+}
+
+.assessment-status--completed {
+  background: rgba(30, 30, 30, 0.12);
+}
+
+.assessment-due {
+  color: rgba(30, 30, 30, 0.5);
+}
+
+/* Active-window badge on the card (mirrors the status chip on the right). */
+.assessment-window {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+.assessment-window--upcoming {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.assessment-window--closed {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.assessment-window--open {
+  background: var(--surface-strong);
+  color: var(--text-muted);
+}
+.assessment-card-cta--muted {
+  color: var(--text-faint);
+  font-weight: var(--fw-medium);
+}
+
+.assessment-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+  color: var(--dash-charcoal);
+}
+
+.assessment-card-sub {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(30, 30, 30, 0.6);
+}
+
+.assessment-card-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(30, 30, 30, 0.45);
+}
+
+.assessment-card-cta {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+}
+
+/* Reports page (participants) */
+
+.reports-page .reports-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.reports-hero {
+  margin-bottom: 1.75rem;
+}
+
+.reports-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+  margin: 0 0 0.35rem;
+}
+
+.reports-sub {
+  margin: 0;
+  color: rgba(30, 30, 30, 0.65);
+  font-size: 0.95rem;
+}
+
+.reports-empty {
+  padding: 2rem 1.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.reports-empty p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--dash-muted);
+}
+
+.reports-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reports-row {
+  padding: var(--sp-5) var(--sp-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+
+.reports-row:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.reports-row-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  color: var(--dash-charcoal);
+}
+
+.reports-row-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dash-muted);
+}
+
+.reports-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Phase F — responsive (the card grid auto-fills; tighten gutters on mobile). */
+@media (max-width: 600px) {
+  .assessments-page .assessments-main {
+    padding: 0 1rem 2rem;
+  }
+  .assessments-title {
+    font-size: 1.5rem;
+  }
+  .assessments-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

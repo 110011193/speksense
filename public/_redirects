@@ -1,0 +1,14 @@
+# Netlify-style fallback (Vercel uses vercel.json and ignores this file).
+# Kept in sync with vercel.json. For Netlify, also add an /api proxy line, e.g.:
+#   /api/*   https://YOUR-APP.monsterasp.net/api/:splat   200
+/signup              /signup.html              200
+/calendar            /calendar.html            200
+/dashboard           /dashboard.html           200
+/people              /dashboard.html           200
+/profile             /dashboard.html           200
+/assessments         /dashboard.html           200
+/assessments/*       /dashboard.html           200
+/configure           /dashboard.html           200
+/configure/*         /dashboard.html           200
+/reports             /dashboard.html           200
+/settings            /dashboard.html           200

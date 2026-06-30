@@ -1,0 +1,586 @@
+.configure-page {
+  min-height: 100vh;
+}
+
+.configure-main {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.configure-main--narrow {
+  max-width: 42rem;
+}
+
+.configure-center {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.configure-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.configure-title {
+  font-size: clamp(1.5rem, 3vw, 1.85rem);
+  font-weight: 700;
+  color: var(--dash-charcoal);
+  margin: 0 0 0.35rem;
+}
+
+.configure-sub {
+  margin: 0;
+  color: rgba(30, 30, 30, 0.6);
+  max-width: 36rem;
+}
+
+.configure-muted {
+  color: rgba(30, 30, 30, 0.55);
+  font-size: 0.9rem;
+}
+
+.configure-back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.65);
+  text-decoration: none;
+}
+
+.configure-back:hover {
+  color: var(--dash-charcoal);
+}
+
+.configure-section {
+  margin-bottom: 2.5rem;
+}
+
+.configure-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.configure-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .configure-card-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.configure-card {
+  display: block;
+  padding: 1.1rem 1.25rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(30, 30, 30, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.configure-card:hover {
+  border-color: rgba(30, 30, 30, 0.16);
+  box-shadow: 0 8px 24px rgba(30, 30, 30, 0.06);
+}
+
+.configure-card--static {
+  display: block;
+}
+
+.configure-card h3 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.configure-card p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.configure-card-meta {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(30, 30, 30, 0.45);
+}
+
+.configure-card-actions {
+  margin-top: 0.85rem;
+}
+
+/* Draft cards: the whole card is a link, so the delete control is an overlaid sibling
+   (a <button> can't be nested in an <a>) with an inline two-step confirm. */
+.configure-card-wrap {
+  position: relative;
+}
+
+.configure-card-delete-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.configure-card-delete-btn {
+  border: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+  transition: background 0.15s ease;
+}
+
+.configure-card-delete-btn:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+.configure-card-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.configure-card-delete-btn--ghost {
+  background: rgba(30, 30, 30, 0.07);
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.configure-card-delete-btn--ghost:hover {
+  background: rgba(30, 30, 30, 0.12);
+}
+
+.configure-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.configure-badge--draft {
+  background: rgba(30, 30, 30, 0.08);
+}
+
+.configure-badge--published {
+  background: var(--dash-yellow);
+}
+
+.configure-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--sp-6);
+}
+
+.configure-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.configure-step + .configure-step::before {
+  content: '';
+  width: var(--sp-3);
+  height: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+  margin-right: var(--sp-1);
+}
+
+.configure-step--active {
+  background: var(--brand-charcoal);
+  color: #fff;
+}
+
+.configure-step--done {
+  background: var(--brand-yellow-soft);
+  color: var(--brand-charcoal);
+}
+
+.configure-panel {
+  padding: 1.25rem;
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1.25rem;
+}
+
+.configure-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.configure-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.65);
+}
+
+.configure-span-2 {
+  grid-column: span 2;
+}
+
+.configure-form-grid input,
+.configure-form-grid select,
+.configure-form-grid textarea,
+.configure-panel input,
+.configure-panel textarea,
+.configure-search input {
+  font: inherit;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--dash-charcoal);
+  /* Fill the grid cell and allow shrinking below intrinsic width (grid min-width:auto fix). */
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Stack the basics form fields on mobile so inputs don't overflow the card. */
+@media (max-width: 640px) {
+  .configure-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .configure-span-2 {
+    grid-column: span 1;
+  }
+}
+
+.configure-type-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .configure-type-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.configure-type-card {
+  text-align: left;
+  padding: 1rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-glass);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.configure-type-card--active {
+  border-color: var(--dash-charcoal);
+  background: var(--dash-yellow);
+}
+
+.configure-type-card strong {
+  font-size: 0.95rem;
+}
+
+.configure-type-card span {
+  font-size: 0.8125rem;
+  color: rgba(30, 30, 30, 0.6);
+}
+
+.configure-repeat-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.configure-repeat-row input {
+  flex: 1;
+}
+
+.configure-icon-btn {
+  width: 2.25rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.08);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.configure-content-block {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(30, 30, 30, 0.08);
+}
+
+.configure-content-block label {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.configure-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+}
+
+/* Trait: per-statement option rows (input + remove) and the add-option button. */
+.configure-option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.configure-option-row input {
+  flex: 1;
+}
+.configure-add-option {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.85rem;
+}
+
+/* Trait: "how many statements" quick-add row. */
+.configure-trait-add {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(30, 30, 30, 0.08);
+}
+.configure-trait-add-count {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.6);
+}
+.configure-trait-add-count input {
+  width: 5rem;
+}
+
+/* Trait: General vs Custom template chooser (Type step). */
+.configure-trait-template {
+  margin-top: 0.85rem;
+}
+.configure-trait-template-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(30, 30, 30, 0.5);
+  margin: 0 0 0.6rem;
+}
+
+.configure-link-danger {
+  background: none;
+  border: none;
+  color: #b42318;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.configure-field-error {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--danger, #b42318);
+  font-size: var(--fs-sm, 0.8125rem);
+  font-weight: 500;
+}
+
+/* Flag an invalid input with more than colour alone (SC 1.4.1). */
+.configure-panel input[aria-invalid='true'],
+.configure-form-grid input[aria-invalid='true'] {
+  border-color: var(--danger, #b42318);
+  box-shadow: 0 0 0 1px var(--danger, #b42318);
+}
+
+.configure-radio,
+.configure-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  margin: 0.35rem 0;
+}
+
+.configure-review {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.configure-review dt {
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.configure-review dd {
+  margin: 0;
+}
+
+.configure-wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.configure-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.configure-tab {
+  border: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.06);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.configure-tab--active {
+  background: var(--dash-yellow);
+}
+
+.configure-assign-panel {
+  margin-bottom: 1rem;
+}
+
+.configure-search {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.configure-search input {
+  width: 100%;
+}
+
+.configure-people-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 280px;
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 30, 30, 0.08);
+}
+
+.configure-people-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.15rem 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid rgba(30, 30, 30, 0.06);
+  cursor: pointer;
+  align-items: center;
+}
+
+.configure-people-row input {
+  grid-row: span 2;
+}
+
+.configure-people-name {
+  font-weight: 600;
+}
+
+.configure-people-meta {
+  font-size: 0.8125rem;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.configure-import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.75rem 0;
+}
+
+.configure-file-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.configure-import-errors {
+  font-size: 0.8125rem;
+  color: #b42318;
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.configure-banner {
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+
+.configure-banner--warn {
+  background: rgba(180, 35, 24, 0.08);
+  color: #b42318;
+}
+
+.configure-banner--ok {
+  background: rgba(34, 139, 34, 0.1);
+  color: #1a6b1a;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

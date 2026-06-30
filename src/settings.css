@@ -1,0 +1,294 @@
+.settings-page .settings-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--sp-6) var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5);
+  align-items: start;
+}
+
+.settings-hero {
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
+}
+
+.settings-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  color: var(--text-ink);
+  margin: 0 0 var(--sp-1);
+}
+
+.settings-sub {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+
+.settings-card {
+  padding: 1.35rem 1.5rem 1.5rem;
+  margin-bottom: 0;
+  min-width: 0;
+  height: 100%;
+}
+
+@media (max-width: 560px) {
+  .settings-page .settings-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-card-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-ink);
+  margin: 0 0 1rem;
+}
+
+.settings-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin: 0 0 var(--sp-4);
+}
+
+.settings-card-head .settings-card-title {
+  margin: 0;
+}
+
+/* Transient save confirmation — success-toned (red is reserved for errors). */
+.settings-saved {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--success);
+  opacity: 0;
+  transition: opacity var(--t-base);
+}
+
+.settings-saved:not(:empty) {
+  opacity: 1;
+}
+
+.settings-field {
+  margin-bottom: 1rem;
+}
+
+.settings-field:last-child {
+  margin-bottom: 0;
+}
+
+.settings-field--inline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.settings-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--dash-muted);
+  margin-bottom: 0.35rem;
+}
+
+.settings-field--inline .settings-label {
+  margin-bottom: 0;
+}
+
+.settings-input,
+.settings-select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  font-size: var(--fs-md);
+  font-family: inherit;
+  color: var(--dash-ink);
+}
+
+.settings-readonly {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  color: var(--text-ink);
+  word-break: break-word;
+}
+
+.settings-role-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--dash-yellow);
+  color: var(--dash-charcoal);
+}
+
+.settings-copy {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--dash-muted);
+  font-weight: 500;
+}
+
+/* Loading skeleton spans the full settings grid (like the hero). */
+.settings-loading {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 1rem;
+}
+
+/* Field-level error — red reserved for genuine errors (SC 1.4.1 + text, not colour alone). */
+.settings-field-error {
+  margin: 0.35rem 0 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  color: var(--danger);
+}
+
+.settings-input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.settings-toggle-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.settings-toggle-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-toggle-row:first-child {
+  padding-top: 0;
+}
+
+.settings-toggle-row--stack {
+  flex-direction: column;
+  align-items: stretch;
+  border-bottom: none;
+  padding-top: 0;
+}
+
+.settings-toggle-row--stack .settings-toggle {
+  align-self: flex-end;
+}
+
+.settings-toggle-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.settings-toggle-label > span:first-child {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-ink);
+}
+
+.settings-toggle-hint {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-normal);
+  color: var(--text-muted);
+}
+
+/* Real toggle switch (keeps native checkbox semantics via appearance:none). */
+.settings-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  cursor: pointer;
+  transition: background var(--t-base), border-color var(--t-base);
+}
+
+.settings-toggle::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-base);
+}
+
+.settings-toggle:checked {
+  background: var(--brand-yellow);
+  border-color: var(--brand-yellow-strong);
+}
+
+.settings-toggle:checked::before {
+  transform: translateX(18px);
+}
+
+.settings-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-toggle,
+  .settings-toggle::before {
+    transition: none;
+  }
+}
+
+.settings-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 0.35rem;
+}
+
+.settings-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--dash-ink);
+  cursor: pointer;
+}
+
+.settings-card--session .settings-signout {
+  margin-top: 0.25rem;
+}
+
+.dash-settings-btn--active {
+  background: var(--dash-charcoal);
+  color: #fff;
+}
+
+.dash-settings-btn--active svg {
+  stroke: #fff;
+}

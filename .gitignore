@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# .NET backend — deploys separately to MonsterASP.NET; not part of the Vercel FE build/repo.
+backend/
+[Bb]in/
+[Oo]bj/
+*.user
+secrets.json
+appsettings.*.local.json
+# Backend design doc kept out of the frontend repo.
+BACKEND_ARCHITECTURE.md
+
+# Misc / source data
+*.xlsx
+.claude/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

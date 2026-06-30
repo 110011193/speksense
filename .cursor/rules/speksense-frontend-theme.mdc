@@ -1,0 +1,117 @@
+---
+description: SpekSense frontend theme — layout, tokens, components, and page conventions (Crextio-inspired)
+globs: "{**/*.html,src/**/*.{css,js,tsx,ts},vite.config.ts}"
+alwaysApply: false
+---
+
+# SpekSense frontend theme
+
+Vite multi-page app (HTML/CSS/JS + React on dashboard host). Visual language follows a soft Crextio-style HR dashboard: cream/yellow gradient canvas, pill shapes, glass cards, charcoal + yellow accents.
+
+## Brand
+
+- Product name: **SpekSense** (not Crextio in UI copy).
+- Logo: SVG mark + wordmark in `.dash-brand` / auth `.brand` — triangle + arc strokes, `#222`.
+
+## Pages & assets
+
+| Route | HTML | Styles | JS |
+|-------|------|--------|-----|
+| Sign in | `index.html` | `src/style.css` | `src/main.js` |
+| Sign up | `signup.html` | `src/style.css` | `src/main.js` |
+| Dashboard + assessments | React shell (`dashboard.html` → `/dashboard`, `/profile`, `/assessments`) | `dashboard.css`, `dashboard-insights.css`, … | `src/main.tsx` + `src/App.tsx` (**BrowserRouter**) |
+| People | `people.html` | `dashboard.css` + `people.css` | `people.js` |
+| Calendar | `calendar.html` | `dashboard.css` + `calendar.css` | `calendar.js` |
+
+Register new pages in `vite.config.ts` `rollupOptions.input`. Public assets: `public/images/`.
+
+### Dashboard React host (HashRouter)
+
+- `dashboard.html` mounts only `<div id="root">` → `src/main.tsx`.
+- Routes: `/dashboard` (HR admin), `/profile`, `/settings`, `/configure` (HR admin), `/assessments`, `/reports` (participants), `/assessments/:id/…`.
+- Static MPAs link app routes with clean paths: `/dashboard`, `/assessments`, `/reports`, `/settings`, `/profile`, `/people`, `/calendar`.
+- TSX layout: `src/pages/`, `src/components/`, `src/data/assessments.ts` (catalog facade), `src/types/assessment.ts`, `src/types/presentation.ts` (`onePerScreen` | `singlePage` survey layout).
+- List uses full `AppHeader`; flow pages use `FlowHeader` + `ProgressBar` on standard survey.
+- **360** (`kind: survey360`): peers → instructions → drag peers on **Effectiveness** (0.0–5.0) per behavior; `src/survey-360.css`, `src/data/team.ts`.
+
+## Typography
+
+- Font: **Inter** (Google Fonts) — weights 300 (page titles), 400, 500, 600, 700.
+- Body/dashboard ink: `#2b2b2b` (`--dash-ink` / `--ink`).
+- Muted labels: `#8a8a8a` / `#9c9c9c`.
+- Inactive nav links: `#777`; active nav: white on charcoal pill.
+
+## Color tokens
+
+**Shared canvas (auth + app):**
+
+- `--canvas-cool: #e5e7eb`
+- `--canvas-warm: #fef3c7`
+- `--canvas-peach: #fde68a`
+- `--canvas-base: #f3f4f6`
+
+**App (dashboard.css `:root`):**
+
+- Accent yellow: `--dash-yellow: #ffd747` (auth submit uses `--yellow: #ffd666` — keep close, prefer dash yellow on new app UI).
+- Charcoal: `--dash-charcoal: #1a1a1a`
+- Glass cards: `rgba(255,255,255,0.55–0.82)` + `backdrop-filter: blur(12–20px)`
+
+## Background (critical)
+
+Same on **auth** (`.page::before` + `.auth-card::before`) and **app** (`.dashboard-page::before` + `::after`):
+
+1. Fixed blurred mesh (`filter: blur(56px)`, large negative inset).
+2. Sharper gradient overlay on top (no seam between left/right on auth).
+
+Do not reintroduce a vertical divider or separate background on left vs right panels.
+
+## App shell header
+
+Structure: `.dash-nav` → brand left; `.dash-nav-end` right (flex) containing:
+
+1. `.dash-nav-links` — **single white pill** wrapping all nav items (`border-radius: 999px`, white bg ~92%, soft shadow).
+2. `.dash-nav-actions` — Setting pill, notifications, profile.
+
+**Nav items (current):** HR: Dashboard, People, Assessments, Calendar, Configure. Participants: Assessments, Reports, Calendar (no Dashboard, People, or Configure).
+
+- Active item: `.dash-nav-link--active` — charcoal fill, white text.
+- Header stacking: `.dash-nav { z-index: 500 }`, `.dash-main { z-index: 1 }` so clicks and dropdowns are not covered by cards.
+
+**Utilities:**
+
+- Setting (gear): NavLink to `/settings` — account, notifications, privacy, sign out (`userSettings.ts`). **Configure** (HR only): NavLink to `/configure` — assessment builder, publish, assign users (`src/api/`, `src/pages/configure/`).
+- Bell: `#notif-toggle`; panel `#notif-panel` managed in `src/notifications.js` — **append panel to `document.body`**, `position: fixed`, `z-index: 10000`, position from bell `getBoundingClientRect()` after `requestAnimationFrame` (avoid first-open wrong placement).
+- Profile: header user icon → `/profile`.
+
+## Components
+
+- **Pills:** `border-radius: 999px` — stat pills (dark / yellow / hatched / outline), filter buttons, legend pills.
+- **Cards:** large radius `--dash-radius-lg` (28px) or 32–40px on tables/calendar; light shadow `0 12px 40px rgba(0,0,0,0.06)`.
+- **Selected table row:** `--dash-yellow` background (People page).
+- **Status badges:** green “Invited”, grey “Absent” with dot pseudo-element.
+- **Dark task card:** `--dash-charcoal` background, white text, dotted row dividers (dashboard onboarding list).
+
+## CSS organization
+
+- **Auth only** → `src/style.css` (do not bloat with dashboard rules).
+- **Shared app chrome** → `src/dashboard.css` (nav, canvas, hero pills, profile `.dash-grid` widgets).
+- **HR admin dashboard** → `src/dashboard-insights.css` (`.dash-hr-home-grid`, KPI row, analytics charts grid).
+- **Page-specific** → `src/people.css`, `src/calendar.css`.
+- Import shared logic: `notifications.js` from dashboard/people/calendar entry scripts.
+
+## JS patterns
+
+- Login: `sessionStorage` keys … `speksense_is_admin` (**HR only**: email local-part `admin` or `hr`) → HR lands on `/dashboard`, employees on `/assessments`.
+- `/dashboard`: **HR admin only** — screenshot-aligned HR home plus analytics charts; data in `hrAdminDashboard.ts` + `orgSurveyAnalytics.ts`. Non-admin → redirect `/assessments`.
+- `/reports`: **participants only** — PDF report list for assessments completed in-session (`assignmentProgress.ts`); nav link hidden for HR admin. Admin `/reports` → `/dashboard`.
+- Dashboard/assessments: React + `react-router-dom` BrowserRouter; People/Calendar remain vanilla.
+- Notifications: portal to body, ignore outside click for toggle/panel, Escape to close.
+
+## Fidelity notes
+
+- Prefer **pill/capsule** shapes over sharp rectangles.
+- Weekend calendar headers: coral/salmon tint (`.cal-dow-weekend`).
+- Off-month days: diagonal hatch (`.cal-day--other`).
+- Calendar page: **only** month grid + header (no sidebar people list, no search toolbar under title).
+
+When adding UI, reuse existing class names and tokens before inventing new colors or radii.

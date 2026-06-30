@@ -1,0 +1,76 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Speksence design tokens — the single source of truth for the visual system.
+   Imported first in both entry points (src/main.tsx, src/main.js) so every other
+   stylesheet can reference these. Keeps the Crextio-inspired identity (cream→yellow,
+   glass, charcoal + yellow, Inter) but unifies the previously conflicting values.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* ── Brand & semantic color ── */
+  --brand-yellow: #ffd747;          /* canonical accent (was #ffd666 / #ffd747) */
+  --brand-yellow-soft: #ffeaa0;
+  --brand-yellow-strong: #ffcf52;   /* hover/pressed */
+  --brand-charcoal: #1a1a1a;        /* active nav, dark widgets, chart bars */
+
+  --text-ink: #1f2329;              /* primary text (crisper than #2b2b2b) */
+  --text-muted: #5f6670;            /* secondary text — ~5.5:1 on light cards (was #8a8a8a/#9c9c9c) */
+  --text-faint: #8a909a;            /* tertiary/disabled, decorative only */
+
+  --success: #15803d;               /* traffic-light: good */
+  --warning: #b45309;               /* traffic-light: warning */
+  --danger: #b42318;                /* traffic-light: error ONLY */
+  --success-bg: #e7f4ec;
+  --warning-bg: #fdecd6;
+  --danger-bg: #fdecec;
+
+  /* surfaces & borders */
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: rgba(255, 255, 255, 0.9);
+  --surface-glass: rgba(255, 255, 255, 0.55);
+  --border-subtle: rgba(30, 30, 30, 0.08);
+  --border: rgba(30, 30, 30, 0.14);
+
+  /* ── Type scale (Inter; ~6 steps, weights 300/400/500/600/700) ── */
+  --fs-xs: 0.75rem;     /* 12px — captions, meta */
+  --fs-sm: 0.8125rem;   /* 13px — labels, secondary */
+  --fs-md: 0.9375rem;   /* 15px — body */
+  --fs-lg: 1.125rem;    /* 18px — card titles */
+  --fs-xl: 1.5rem;      /* 24px — section headings */
+  --fs-2xl: 2rem;       /* 32px — KPI numbers */
+  --fs-3xl: clamp(2.1rem, 4vw, 3rem); /* page greeting */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-tight: 1.15;
+  --lh-normal: 1.45;
+
+  /* ── Spacing scale (4px base) ── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 48px;
+
+  /* ── Radius scale ── */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 28px;
+  --r-xl: 36px;
+  --r-pill: 999px;
+
+  /* ── Elevation ── */
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.12);
+
+  /* ── Motion ── */
+  --t-fast: 0.12s ease;
+  --t-base: 0.18s ease;
+
+  /* ── Focus ring (on-brand charcoal; sits in the offset gap so it shows on any bg) ── */
+  --focus: #1a1a1a;
+}

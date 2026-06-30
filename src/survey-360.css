@@ -1,0 +1,431 @@
+.flow-main--wide {
+  max-width: 720px;
+}
+
+.peer-selection-panel {
+  width: 100%;
+  text-align: center;
+}
+
+.peer-selection-panel .flow-title,
+.peer-selection-panel .flow-sub,
+.peer-selection-panel .flow-meta {
+  text-align: center;
+}
+
+.peer-selection-panel .peer-grid {
+  text-align: initial;
+}
+
+.peer-selection-panel .flow-actions {
+  justify-content: center;
+  gap: 1rem;
+}
+
+.peer-selection-panel .flow-actions .flow-cta-primary {
+  margin-left: 0;
+}
+
+.survey360-panel {
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  overflow-x: visible;
+}
+
+.survey360-scale-block {
+  width: 143%;
+  margin-left: -21.5%;
+  box-sizing: border-box;
+}
+
+.survey360-scale-block .flow-question {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.survey360-scale-block .survey360-competency {
+  text-align: left;
+}
+
+.survey360-panel-actions {
+  justify-content: center;
+  gap: 1rem;
+}
+
+.survey360-panel-actions .flow-cta-primary {
+  margin-left: 0;
+}
+
+.survey360-competency {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(30, 30, 30, 0.5);
+}
+
+.flow-hint {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  color: rgba(30, 30, 30, 0.55);
+  text-align: center;
+}
+
+.survey360-step-indicator {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.25rem;
+  z-index: 400;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(30, 30, 30, 0.55);
+  text-align: right;
+  pointer-events: none;
+}
+
+.peer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.85rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.peer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 0.75rem;
+  border-radius: 20px;
+  border: 2px solid rgba(30, 30, 30, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.peer-card:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.peer-card--selected {
+  border-color: var(--dash-charcoal);
+  background: rgba(255, 215, 71, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.peer-card--rated {
+  border-color: rgba(30, 30, 30, 0.12);
+  background: var(--dash-yellow);
+  opacity: 0.92;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.peer-card--rated:hover {
+  background: var(--dash-yellow);
+}
+
+.peer-card-badge {
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.thankyou-panel {
+  text-align: center;
+}
+
+.thankyou-rated-count {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  color: rgba(30, 30, 30, 0.65);
+}
+
+.thankyou-actions {
+  flex-wrap: wrap;
+}
+
+.thankyou-cta-single {
+  margin-left: 0;
+}
+
+.peer-card-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* Fallback when a peer has no uploaded photo yet. */
+.peer-card-avatar--initials {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: var(--dash-charcoal, #1a1a1a);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.peer-card-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--dash-charcoal);
+}
+
+.peer-card-role {
+  font-size: 0.75rem;
+  color: rgba(30, 30, 30, 0.55);
+  line-height: 1.3;
+}
+
+.effectiveness-scale {
+  margin: 1.5rem 0 0;
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.effectiveness-scale-head {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.effectiveness-scale-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--dash-charcoal);
+}
+
+.effectiveness-track {
+  position: relative;
+  height: 12px;
+  width: 100%;
+  max-width: none;
+  margin: 1.25rem 0 3.25rem;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.1);
+  touch-action: none;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.effectiveness-track--hover {
+  background: rgba(255, 215, 71, 0.22);
+  box-shadow: 0 0 0 2px rgba(255, 215, 71, 0.45);
+}
+
+.effectiveness-track-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(255, 215, 71, 0.15), rgba(255, 215, 71, 0.45));
+  pointer-events: none;
+}
+
+.effectiveness-chip {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.effectiveness-chip:active {
+  cursor: grabbing;
+}
+
+.effectiveness-chip img {
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.effectiveness-chip-value {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+  background: var(--dash-yellow);
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+}
+
+.effectiveness-chip--on-track {
+  margin-top: 0;
+}
+
+.effectiveness-chip--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.effectiveness-drag-ghost {
+  position: fixed;
+  z-index: 10002;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.effectiveness-drag-ghost-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.effectiveness-drag-ghost-avatar {
+  border-radius: 50%;
+  border: 3px solid var(--dash-yellow);
+  box-sizing: border-box;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.18));
+}
+
+.effectiveness-drag-desc {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(280px, calc(100vw - 2rem));
+  padding: 0.65rem 0.85rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(30, 30, 30, 0.1);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.effectiveness-drag-desc-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+}
+
+.effectiveness-drag-desc-role {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.75rem;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.effectiveness-drag-desc-rating {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dash-charcoal);
+}
+
+.effectiveness-drag-desc-meaning {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--dash-charcoal);
+}
+
+.effectiveness-overlap-picker {
+  position: fixed;
+  z-index: 10001;
+  transform: translate(-50%, 0.75rem);
+  min-width: 200px;
+  max-width: 280px;
+  padding: 0.65rem 0.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 30, 30, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.effectiveness-overlap-picker-title {
+  margin: 0 0 0.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.effectiveness-overlap-picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.effectiveness-overlap-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dash-charcoal);
+  cursor: grab;
+  touch-action: none;
+  text-align: left;
+}
+
+.effectiveness-overlap-picker-item:active {
+  cursor: grabbing;
+}
+
+.effectiveness-overlap-picker-item:hover {
+  background: rgba(255, 215, 71, 0.35);
+}
+
+.effectiveness-overlap-picker-item img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Phase B — visible on-brand focus ring for the keyboard-operable rating slider. */
+.effectiveness-chip:focus-visible {
+  outline: none;
+}
+.effectiveness-chip:focus-visible img {
+  outline: 2px solid var(--focus, #1a1a1a);
+  outline-offset: 3px;
+}
+
+/* Phase F — contain the scale on small screens (it normally overflows the panel
+   by design at width:143% to give the track more room). */
+@media (max-width: 720px) {
+  .survey360-panel {
+    padding: 0 0.75rem;
+  }
+  .survey360-scale-block {
+    width: 100%;
+    margin-left: 0;
+  }
+  .effectiveness-track {
+    margin: 1.25rem 0 4rem;
+  }
+}
+@media (max-width: 480px) {
+  .effectiveness-chip img {
+    width: 34px;
+    height: 34px;
+  }
+}

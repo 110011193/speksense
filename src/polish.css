@@ -1,0 +1,132 @@
+/* Phase 6 — global UI/UX elevation: accessibility, motion, and interaction polish.
+   Applied app-wide without touching per-screen markup. */
+
+/* Keyboard focus: a clear, consistent focus ring for keyboard users only. */
+:where(a, button, input, select, textarea, [tabindex], [role="button"], [role="slider"]):focus-visible {
+  outline: 2px solid var(--focus, #1a1a1a);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Respect reduced-motion preferences (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle, consistent press feedback on the pill buttons used across the app. */
+.dash-btn-pill,
+.dash-pill--yellow,
+.flow-cta-primary,
+.peer-card {
+  transition: transform 0.08s ease, box-shadow 0.16s ease, background-color 0.16s ease, opacity 0.16s ease;
+}
+.dash-btn-pill:active,
+.dash-pill--yellow:active,
+.flow-cta-primary:active {
+  transform: translateY(1px);
+}
+.dash-btn-pill:disabled,
+.flow-cta-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Loading shimmer utility for skeleton placeholders. */
+.sk-shimmer {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.05) 25%, rgba(0, 0, 0, 0.09) 37%, rgba(0, 0, 0, 0.05) 63%);
+  background-size: 400% 100%;
+  animation: sk-shimmer 1.4s ease infinite;
+  border-radius: 10px;
+  min-height: 14px;
+}
+@keyframes sk-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Gentle fade-in for routed content so async screens don't pop. */
+.dash-main,
+.flow-main {
+  animation: fade-in 0.22s ease both;
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Aria-busy regions read as muted while loading. */
+[aria-busy="true"] {
+  color: var(--text-muted, #5f6670);
+}
+
+/* ── Reusable state components (Skeleton / EmptyState / ErrorNote) ── */
+.sk-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3, 12px);
+  padding: var(--sp-5, 20px);
+  border-radius: var(--r-lg, 28px);
+  background: var(--surface, rgba(255, 255, 255, 0.72));
+  border: 1px solid var(--border-subtle, rgba(30, 30, 30, 0.08));
+}
+
+/* Dashboard loading: responsive grid of skeleton cards. */
+.dash-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--sp-4, 16px);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-2, 8px);
+  padding: var(--sp-8, 48px) var(--sp-5, 20px);
+  border-radius: var(--r-lg, 28px);
+  background: var(--surface, rgba(255, 255, 255, 0.6));
+  border: 1px solid var(--border-subtle, rgba(30, 30, 30, 0.08));
+}
+.empty-state-icon {
+  font-size: 1.6rem;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill, 999px);
+  background: var(--brand-yellow-soft, #ffeaa0);
+  color: var(--brand-charcoal, #1a1a1a);
+  margin-bottom: var(--sp-1, 4px);
+}
+.empty-state-title {
+  margin: 0;
+  font-size: var(--fs-lg, 1.125rem);
+  font-weight: var(--fw-semibold, 600);
+  color: var(--text-ink, #1f2329);
+}
+.empty-state-msg {
+  margin: 0;
+  font-size: var(--fs-sm, 0.8125rem);
+  color: var(--text-muted, #5f6670);
+  max-width: 32ch;
+}
+.empty-state-cta {
+  margin-top: var(--sp-3, 12px);
+}
+
+.error-note {
+  margin: 0;
+  padding: var(--sp-3, 12px) var(--sp-4, 16px);
+  border-radius: var(--r-sm, 12px);
+  background: var(--danger-bg, #fdecec);
+  border: 1px solid #f5c2c2;
+  color: var(--danger, #b42318);
+  font-size: var(--fs-sm, 0.8125rem);
+  font-weight: var(--fw-medium, 500);
+}
