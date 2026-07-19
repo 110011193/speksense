@@ -4,12 +4,14 @@ import { AppHeader } from '../components/AppHeader';
 import { hasLoggedInSession, signOutUser, updateDisplayName } from '../utils/sessionUser';
 import type { UserSettings } from '../utils/userSettings';
 import {
+  changePassword,
   getProfile,
   getSettings,
   patchProfile,
   patchSettings as apiPatchSettings,
   type ProfileData,
 } from '../api/services/platform';
+import { setSession } from '../api/authSession';
 import { ErrorNote } from '../components/EmptyState';
 import { SkeletonCard } from '../components/Skeleton';
 import { LogoutConfirmModal } from '../components/LogoutConfirmModal';
@@ -207,6 +209,8 @@ export function SettingsPage() {
               </article>
             )}
 
+            {profile && <ChangePasswordCard />}
+
             {settings && (
               <>
                 <article className="card glass settings-card">
@@ -304,5 +308,113 @@ export function SettingsPage() {
         onConfirm={handleSignOut}
       />
     </div>
+  );
+}
+
+/** Self-contained password change: verifies the current password server-side, revokes every
+ *  other session, and swaps in the fresh token pair so this session stays signed in. */
+function ChangePasswordCard() {
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => setDone(false), 4000);
+    return () => clearTimeout(t);
+  }, [done]);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (next.length < 10) {
+      setError('New password must be at least 10 characters.');
+      return;
+    }
+    if (next !== confirm) {
+      setError('New password and confirmation do not match.');
+      return;
+    }
+    setBusy(true);
+    try {
+      const result = await changePassword(current, next);
+      setSession(result);
+      setCurrent('');
+      setNext('');
+      setConfirm('');
+      setDone(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not change your password.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <article className="card glass settings-card">
+      <div className="settings-card-head">
+        <h2 className="settings-card-title">Password</h2>
+        <span className="settings-saved" role="status" aria-live="polite">
+          {done ? 'Password changed' : ''}
+        </span>
+      </div>
+      <p className="settings-copy">
+        Changing your password signs you out everywhere else. This session stays signed in.
+      </p>
+      <form onSubmit={submit} className="settings-password-form">
+        <div className="settings-field">
+          <label className="settings-label" htmlFor="pw-current">Current password</label>
+          <input
+            id="pw-current"
+            type="password"
+            className="settings-input"
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+            autoComplete="current-password"
+            required
+          />
+        </div>
+        <div className="settings-field">
+          <label className="settings-label" htmlFor="pw-new">New password</label>
+          <input
+            id="pw-new"
+            type="password"
+            className="settings-input"
+            value={next}
+            onChange={(e) => setNext(e.target.value)}
+            autoComplete="new-password"
+            minLength={10}
+            required
+          />
+          <span className="settings-toggle-hint">At least 10 characters.</span>
+        </div>
+        <div className="settings-field">
+          <label className="settings-label" htmlFor="pw-confirm">Confirm new password</label>
+          <input
+            id="pw-confirm"
+            type="password"
+            className="settings-input"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            autoComplete="new-password"
+            minLength={10}
+            required
+          />
+        </div>
+        {error && (
+          <p className="settings-field-error" role="alert">{error}</p>
+        )}
+        <button
+          type="submit"
+          className="dash-btn-pill dash-pill--yellow"
+          disabled={busy || !current || !next || !confirm}
+        >
+          {busy ? 'Changing…' : 'Change password'}
+        </button>
+      </form>
+    </article>
   );
 }

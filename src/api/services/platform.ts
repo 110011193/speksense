@@ -42,6 +42,14 @@ export type ProfileData = {
   displayName: string; email: string; role: string; isAdmin: boolean;
   organization?: string; profilePictureUrl?: string | null;
 };
+/** Change the caller's password. Returns a fresh token pair (all other sessions are revoked) —
+ *  pass it to setSession so the current session stays signed in. */
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  apiRequest<import('../authSession').AuthResult>('POST', 'auth/change-password', {
+    currentPassword,
+    newPassword,
+  });
+
 export const getSettings = () => apiRequest<UserSettings>('GET', 'me/settings');
 export const patchSettings = (partial: Partial<UserSettings>) => apiRequest<UserSettings>('PATCH', 'me/settings', partial);
 export const getProfile = () => apiRequest<ProfileData>('GET', 'me/profile');

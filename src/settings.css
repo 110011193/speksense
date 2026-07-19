@@ -306,3 +306,14 @@
 .dash-settings-btn--active svg {
   stroke: #fff;
 }
+
+/* Change-password form (Settings → Password card). */
+.settings-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  align-items: flex-start;
+}
+.settings-password-form .settings-input {
+  min-width: 280px;
+}
