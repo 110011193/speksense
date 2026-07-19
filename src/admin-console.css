@@ -1,0 +1,171 @@
+/* Admin/platform consoles: Team (org user management) + Platform (SuperAdmin org provisioning).
+   Builds on the People page shell (.people-*, .card.glass, .dash-btn-pill) and the shared tokens. */
+
+/* ── Role & status pills ───────────────────────────────────────────────── */
+.role-pill,
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+}
+
+.role-pill--admin {
+  background: var(--brand-yellow-soft);
+  color: #7a5a00;
+}
+.role-pill--participant {
+  background: rgba(30, 30, 30, 0.06);
+  color: var(--text-muted);
+}
+.role-pill--manager {
+  background: #e6effc;
+  color: #1d4ed8;
+}
+.dash-role-tag {
+  margin-left: 12px;
+  vertical-align: middle;
+}
+.role-pill--superadmin {
+  background: var(--brand-charcoal);
+  color: #fff;
+}
+
+.status-pill--active {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.status-pill--invited {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.status-pill--disabled,
+.status-pill--suspended {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.status-pill--archived {
+  background: rgba(30, 30, 30, 0.08);
+  color: var(--text-faint);
+}
+
+/* ── Small row affordances ─────────────────────────────────────────────── */
+.team-you-tag {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  background: var(--brand-yellow-soft);
+  color: #7a5a00;
+  font-size: 0.6875rem;
+  font-weight: var(--fw-semibold);
+  vertical-align: middle;
+}
+.team-locked {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+/* Inline two-step confirm (no native confirm() dialogs). */
+.inline-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.inline-confirm__label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.inline-confirm__danger {
+  background: var(--danger);
+  color: #fff;
+}
+.inline-confirm__danger:hover:not(:disabled) {
+  background: #9c1e15;
+}
+
+/* Activation-link callout shown after invite / org creation. */
+.activation-callout {
+  margin-top: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.activation-callout span {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.activation-callout code {
+  font-size: var(--fs-sm);
+  color: var(--text-ink);
+  word-break: break-all;
+}
+
+/* ── Platform: organization cards ──────────────────────────────────────── */
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+.org-card {
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.org-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+.org-card__name {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-ink);
+}
+.org-card__slug {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+.org-card__stats {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.org-stat {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+.org-stat b {
+  color: var(--text-ink);
+  font-weight: 700;
+}
+.org-card__actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+/* Audit method chip. */
+.audit-method {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.6875rem;
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+}

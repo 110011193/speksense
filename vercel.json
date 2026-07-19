@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://YOUR-APP.monsterasp.net/api/:path*"
+      "destination": "https://speksense.runasp.net/api/:path*"
     },
 
     { "source": "/signup", "destination": "/signup.html" },
@@ -19,6 +19,8 @@
     { "source": "/reports", "destination": "/dashboard.html" },
     { "source": "/configure", "destination": "/dashboard.html" },
     { "source": "/configure/:path*", "destination": "/dashboard.html" },
+    { "source": "/team", "destination": "/dashboard.html" },
+    { "source": "/platform", "destination": "/dashboard.html" },
     { "source": "/assessments", "destination": "/dashboard.html" },
     { "source": "/assessments/:path*", "destination": "/dashboard.html" }
   ],

@@ -15,11 +15,13 @@ import {
   type DashboardData,
 } from '../api/services/platform';
 import { ApiError } from '../api/types';
-import { getDisplayName, isAdminUser } from '../utils/sessionUser';
+import { getDisplayName, isAdminUser, isManager } from '../utils/sessionUser';
 
 export function DashboardPage() {
   const name = getDisplayName();
   const hrAdmin = isAdminUser();
+  const manager = isManager();
+  const canView = hrAdmin || manager;
 
   const [hrHome, setHrHome] = useState<DashboardData | null>(null);
   const [org, setOrg] = useState<AnalyticsData | null>(null);
@@ -31,7 +33,7 @@ export function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    if (!hrAdmin) return;
+    if (!canView) return;
 
     let active = true;
     setLoading(true);
@@ -54,9 +56,9 @@ export function DashboardPage() {
     return () => {
       active = false;
     };
-  }, [hrAdmin]);
+  }, [canView]);
 
-  if (!hrAdmin) {
+  if (!canView) {
     return <Navigate to="/assessments" replace />;
   }
 
@@ -68,8 +70,13 @@ export function DashboardPage() {
           <div className="dash-hero-left">
             <h1 className="dash-greeting">
               {getHrGreetingPrefix()}, <span>{name}</span>
+              {manager ? <span className="role-pill role-pill--manager dash-role-tag">Department view</span> : null}
             </h1>
-            <p className="dash-hr-admin-date">{getHrHeaderDateLine()}</p>
+            <p className="dash-hr-admin-date">
+              {manager
+                ? getHrHeaderDateLine().replace('HR Admin View', 'Manager · Department view')
+                : getHrHeaderDateLine()}
+            </p>
           </div>
         </section>
 
@@ -81,7 +88,7 @@ export function DashboardPage() {
           <ErrorNote message={error} />
         ) : hrHome && org ? (
           <>
-            <HrAdminHome data={hrHome as unknown as HrAdminDashboard} />
+            <HrAdminHome data={hrHome as unknown as HrAdminDashboard} readOnly={manager} />
             <HrAnalyticsCharts org={org as unknown as OrgSurveyAnalytics} />
           </>
         ) : (

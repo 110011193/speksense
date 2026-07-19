@@ -3,9 +3,11 @@ import type { HrAdminDashboard } from '../data/hrAdminDashboard';
 
 type Props = {
   data: HrAdminDashboard;
+  /** Managers get a read-only view — hide the admin quick-action shortcuts. */
+  readOnly?: boolean;
 };
 
-export function HrAdminHome({ data }: Props) {
+export function HrAdminHome({ data, readOnly = false }: Props) {
   return (
     <>
       <section className="dash-hr-kpi-row" aria-label="Summary">
@@ -110,18 +112,20 @@ export function HrAdminHome({ data }: Props) {
             </ul>
           </article>
 
-          <article className="card glass dash-hr-home-card">
-            <header className="card-head">
-              <h2 className="card-title">Quick actions</h2>
-            </header>
-            <div className="dash-hr-quick-actions">
-              {data.quickActions.map((action) => (
-                <button key={action.id} type="button" className="dash-btn-pill dash-btn-pill--light">
-                  {action.label}
-                </button>
-              ))}
-            </div>
-          </article>
+          {!readOnly ? (
+            <article className="card glass dash-hr-home-card">
+              <header className="card-head">
+                <h2 className="card-title">Quick actions</h2>
+              </header>
+              <div className="dash-hr-quick-actions">
+                {data.quickActions.map((action) => (
+                  <button key={action.id} type="button" className="dash-btn-pill dash-btn-pill--light">
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+            </article>
+          ) : null}
         </div>
       </div>
     </>

@@ -1,3 +1,5 @@
+import { getAuthUser } from '../api/authSession';
+
 const DISPLAY_NAME_KEY = 'speksense_display_name';
 const EMAIL_KEY = 'speksense_user_email';
 const ADMIN_KEY = 'speksense_is_admin';
@@ -22,16 +24,19 @@ export function isAdminUser(): boolean {
   return sessionStorage.getItem(ADMIN_KEY) === 'true';
 }
 
-export function deriveIsAdminFromEmail(email: string): boolean {
-  const localPart = email.split('@')[0]?.trim().toLowerCase() ?? '';
-  return localPart === 'admin' || localPart === 'hr';
+/** Authoritative role from the JWT-derived session user ('Admin' | 'SuperAdmin' | 'Participant'). */
+export function getUserRole(): string | null {
+  return getAuthUser()?.role ?? null;
 }
 
-export function persistLoginSession(email: string, displayName: string): void {
-  if (!hasSessionStorage()) return;
-  sessionStorage.setItem(DISPLAY_NAME_KEY, displayName);
-  sessionStorage.setItem(EMAIL_KEY, email.trim().toLowerCase());
-  sessionStorage.setItem(ADMIN_KEY, deriveIsAdminFromEmail(email) ? 'true' : 'false');
+/** Platform (vendor) operator — can provision/suspend client organizations. */
+export function isSuperAdmin(): boolean {
+  return getUserRole() === 'SuperAdmin';
+}
+
+/** Department manager — read-only, department-scoped view of people/dashboard/reports. */
+export function isManager(): boolean {
+  return getUserRole() === 'Manager';
 }
 
 export function updateDisplayName(name: string): void {
@@ -41,6 +46,8 @@ export function updateDisplayName(name: string): void {
 }
 
 export function getUserRoleLabel(): string {
+  if (isSuperAdmin()) return 'Platform Owner';
+  if (isManager()) return 'Manager';
   return isAdminUser() ? 'HR Admin' : 'Participant';
 }
 

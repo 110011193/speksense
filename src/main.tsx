@@ -13,6 +13,7 @@ import './settings.css';
 import './assessment-flow.css';
 import './survey-360.css';
 import './configure.css';
+import './admin-console.css';
 import './polish.css';
 
 redirectLegacyUrls();

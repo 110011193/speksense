@@ -3,10 +3,12 @@ import { createAssignments } from '../../api/services/assignmentService';
 import {
   bulkImportPeople,
   createPerson,
+  findPersonByEmail,
   listPeople,
   personDisplayName,
 } from '../../api/services/peopleDirectory';
-import type { OrgPerson } from '../../api/types';
+import { getCohort, listCohorts } from '../../api/services/cohorts';
+import { ApiError, type Cohort, type OrgPerson } from '../../api/types';
 import { downloadUserImportTemplate, parseUserUpload } from './excelImport';
 
 type Props = {
@@ -15,11 +17,12 @@ type Props = {
   onAssigned?: () => void;
 };
 
-type Tab = 'select' | 'manual' | 'import';
+type Tab = 'cohort' | 'select' | 'manual' | 'import';
 
 export function AssignParticipantsPanel({ assessmentId, published, onAssigned }: Props) {
   const [tab, setTab] = useState<Tab>('select');
   const [people, setPeople] = useState<OrgPerson[]>([]);
+  const [cohorts, setCohorts] = useState<Cohort[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -37,6 +40,7 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
   });
 
   const [importErrors, setImportErrors] = useState<{ row: number; message: string }[]>([]);
+  const [adding, setAdding] = useState(false);
 
   const refreshPeople = useCallback(async () => {
     setLoading(true);
@@ -50,7 +54,24 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
 
   useEffect(() => {
     void refreshPeople();
+    void listCohorts().then(setCohorts).catch(() => {});
   }, [refreshPeople]);
+
+  async function addFromCohort(c: Cohort) {
+    setError(null);
+    try {
+      const detail = await getCohort(c.id);
+      setSelected((prev) => {
+        const next = new Set(prev);
+        detail.members.forEach((m) => next.add(m.personId));
+        return next;
+      });
+      const n = detail.members.length;
+      setMessage(`Selected ${n} ${n === 1 ? 'person' : 'people'} from “${c.name}”. Assign below.`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not load that cohort.');
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -95,22 +116,43 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
   }
 
   async function handleManualAdd() {
+    if (adding) return; // guard double-submit (was causing a phantom "already exists" then add)
     setError(null);
+    setMessage(null);
+    setAdding(true);
+    const email = manual.email.trim();
+    const reset = { firstName: '', lastName: '', email: '', jobTitle: '', department: '', site: '' };
     try {
       const person = await createPerson({
         firstName: manual.firstName,
         lastName: manual.lastName,
-        email: manual.email,
+        email,
         jobTitle: manual.jobTitle,
         department: manual.department || undefined,
         site: manual.site || undefined,
       });
       await refreshPeople();
       setSelected((prev) => new Set(prev).add(person.id));
-      setManual({ firstName: '', lastName: '', email: '', jobTitle: '', department: '', site: '' });
+      setManual(reset);
       setMessage(`Added ${personDisplayName(person)} to the directory and selection.`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not add user.');
+      // Already in the directory → idempotent: select the existing person instead of erroring.
+      if (e instanceof ApiError && e.status === 409) {
+        const list = await listPeople();
+        setPeople(list);
+        const existing = findPersonByEmail(list, email);
+        if (existing) {
+          setSelected((prev) => new Set(prev).add(existing.id));
+          setManual(reset);
+          setMessage(`${personDisplayName(existing)} is already in the directory — selected.`);
+        } else {
+          setError('That email already exists. Find the person on the "Existing People" tab.');
+        }
+      } else {
+        setError(e instanceof Error ? e.message : 'Could not add user.');
+      }
+    } finally {
+      setAdding(false);
     }
   }
 
@@ -154,20 +196,11 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
         <button
           type="button"
           role="tab"
-          aria-selected={tab === 'select'}
-          className={`configure-tab${tab === 'select' ? ' configure-tab--active' : ''}`}
-          onClick={() => setTab('select')}
+          aria-selected={tab === 'cohort'}
+          className={`configure-tab${tab === 'cohort' ? ' configure-tab--active' : ''}`}
+          onClick={() => setTab('cohort')}
         >
-          Existing users
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === 'manual'}
-          className={`configure-tab${tab === 'manual' ? ' configure-tab--active' : ''}`}
-          onClick={() => setTab('manual')}
-        >
-          Add manually
+          Cohorts
         </button>
         <button
           type="button"
@@ -176,9 +209,58 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
           className={`configure-tab${tab === 'import' ? ' configure-tab--active' : ''}`}
           onClick={() => setTab('import')}
         >
-          Excel import
+          Excel Import
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === 'select'}
+          className={`configure-tab${tab === 'select' ? ' configure-tab--active' : ''}`}
+          onClick={() => setTab('select')}
+        >
+          Existing People
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === 'manual'}
+          className={`configure-tab${tab === 'manual' ? ' configure-tab--active' : ''}`}
+          onClick={() => setTab('manual')}
+        >
+          Add Manually
         </button>
       </div>
+
+      {tab === 'cohort' ? (
+        <div className="configure-assign-panel">
+          {cohorts.length === 0 ? (
+            <p className="configure-muted">
+              No saved cohorts yet. Create one under <strong>People → Cohorts</strong>, then assign it here in one click.
+            </p>
+          ) : (
+            <ul className="configure-cohort-list">
+              {cohorts.map((c) => (
+                <li key={c.id} className="configure-cohort-row">
+                  <div className="configure-cohort-info">
+                    <span className="configure-cohort-name">{c.name}</span>
+                    <span className="configure-cohort-meta">
+                      {c.memberCount} {c.memberCount === 1 ? 'person' : 'people'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="dash-btn-pill dash-btn-pill--light"
+                    onClick={() => void addFromCohort(c)}
+                  >
+                    Add to selection
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="configure-muted">{selected.size} selected — assign them below.</p>
+        </div>
+      ) : null}
 
       {tab === 'select' ? (
         <div className="configure-assign-panel">
@@ -260,8 +342,13 @@ export function AssignParticipantsPanel({ assessmentId, published, onAssigned }:
             />
           </label>
           <div className="configure-span-2">
-            <button type="button" className="dash-btn-pill dash-btn-pill--light" onClick={() => void handleManualAdd()}>
-              Add to directory
+            <button
+              type="button"
+              className="dash-btn-pill dash-btn-pill--light"
+              disabled={adding}
+              onClick={() => void handleManualAdd()}
+            >
+              {adding ? 'Adding…' : 'Add to directory'}
             </button>
           </div>
         </div>

@@ -194,6 +194,15 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
+/* Activation: email is derived from the invite token and locked. */
+.field input:disabled,
+.field input.is-locked {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .password-wrap {
   position: relative;
 }

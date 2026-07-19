@@ -18,6 +18,7 @@ export type OrgPerson = {
 
 export type AssessmentDefinition = Omit<Assignment, 'status'> & {
   publishStatus: 'draft' | 'published';
+  assignmentCount?: number;
   createdAt: string;
   updatedAt: string;
   createdByEmail: string | null;
@@ -57,6 +58,23 @@ export type CreatePersonInput = {
 };
 
 export type BulkPersonRow = CreatePersonInput;
+
+export type Cohort = {
+  id: string;
+  name: string;
+  memberCount: number;
+  createdAt: string;
+};
+
+export type CohortMember = {
+  personId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  jobTitle: string;
+};
+
+export type CohortDetail = Cohort & { members: CohortMember[] };
 
 export type BulkImportResult = {
   created: OrgPerson[];

@@ -15,7 +15,9 @@ function isAppShellPath(pathname: string): boolean {
     pathname === '/configure' ||
     pathname.startsWith('/configure/') ||
     pathname === '/reports' ||
-    pathname === '/settings'
+    pathname === '/settings' ||
+    pathname === '/team' ||
+    pathname === '/platform'
   );
 }
 

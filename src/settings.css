@@ -120,6 +120,20 @@
   word-break: break-word;
 }
 
+/* Display-name editor: input + Save button that appears once the value changes. */
+.settings-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.settings-name-row .settings-input {
+  flex: 1;
+}
+.settings-name-save {
+  white-space: nowrap;
+  padding: 0.55rem 1.1rem;
+}
+
 .settings-role-pill {
   font-size: 0.72rem;
   font-weight: 700;

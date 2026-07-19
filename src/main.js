@@ -7,7 +7,33 @@ import { setSession } from './api/authSession';
 document.addEventListener('DOMContentLoaded', () => {
   setupPasswordToggle();
   setupFormSubmission();
+  void prefillActivationEmail();
 });
+
+/**
+ * On the account-creation page opened from an activation link (?token=), resolve the invited
+ * person's email from the token and pre-fill + lock the email field (it's derived from the token,
+ * so the user must not change it). Best-effort: on any failure the field stays empty/editable.
+ */
+async function prefillActivationEmail() {
+  const token = new URLSearchParams(window.location.search).get('token');
+  const emailEl = document.getElementById('email');
+  if (!token || !emailEl) return; // login page (no token) or no email field → nothing to do
+  try {
+    const res = await fetch(`/api/auth/activation?token=${encodeURIComponent(token)}`);
+    if (!res.ok) return;
+    const info = await res.json();
+    if (info && info.email) {
+      emailEl.value = info.email;
+      emailEl.setAttribute('disabled', 'true');
+      emailEl.classList.add('is-locked');
+    }
+    const nameEl = document.getElementById('fullname');
+    if (nameEl && info && info.displayName && !nameEl.value) nameEl.value = info.displayName;
+  } catch {
+    /* ignore — the field simply stays empty and editable */
+  }
+}
 
 /**
  * Handles toggling the password input type and updating the eye/eye-slash icons.

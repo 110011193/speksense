@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AppHeader } from '../components/AppHeader';
-import { hasLoggedInSession, signOutUser } from '../utils/sessionUser';
+import { hasLoggedInSession, signOutUser, updateDisplayName } from '../utils/sessionUser';
 import type { UserSettings } from '../utils/userSettings';
 import {
   getProfile,
@@ -21,6 +21,7 @@ export function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
+  const [savingName, setSavingName] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [savedAt, setSavedAt] = useState(0);
   // Last-write-wins guard so a slow earlier PATCH failure can't revert a newer toggle.
@@ -102,24 +103,25 @@ export function SettingsPage() {
       });
   };
 
-  const handleDisplayNameBlur = () => {
+  const nameDirty = displayName.trim().length > 0 && displayName.trim() !== (profile?.displayName ?? '');
+
+  const saveDisplayName = () => {
     const trimmed = displayName.trim();
-    if (!trimmed || trimmed === profile?.displayName) {
-      // Nothing meaningful changed; restore the canonical value.
-      if (profile) setDisplayName(profile.displayName);
-      return;
-    }
-    setDisplayName(trimmed);
+    if (!trimmed || trimmed === profile?.displayName || savingName) return;
+    setSavingName(true);
     setNameError(null);
     patchProfile(trimmed)
       .then((updated) => {
         setProfile(updated);
         setDisplayName(updated.displayName);
+        // Mirror into the cached session name so the dashboard greeting updates without re-login.
+        updateDisplayName(updated.displayName);
+        setSavedAt(Date.now());
       })
       .catch((e) => {
-        if (profile) setDisplayName(profile.displayName);
         setNameError(e instanceof Error ? e.message : 'Could not update your display name.');
-      });
+      })
+      .finally(() => setSavingName(false));
   };
 
   const handleSignOut = () => {
@@ -153,24 +155,35 @@ export function SettingsPage() {
                   <label className="settings-label" htmlFor="settings-display-name">
                     Display name
                   </label>
-                  <input
-                    id="settings-display-name"
-                    type="text"
-                    className="settings-input"
-                    value={displayName}
-                    maxLength={80}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    onBlur={handleDisplayNameBlur}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        e.currentTarget.blur();
-                      }
-                    }}
-                    autoComplete="name"
-                    aria-invalid={nameError ? true : undefined}
-                    aria-describedby={nameError ? 'settings-display-name-error' : undefined}
-                  />
+                  <div className="settings-name-row">
+                    <input
+                      id="settings-display-name"
+                      type="text"
+                      className="settings-input"
+                      value={displayName}
+                      maxLength={80}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && nameDirty) {
+                          e.preventDefault();
+                          saveDisplayName();
+                        }
+                      }}
+                      autoComplete="name"
+                      aria-invalid={nameError ? true : undefined}
+                      aria-describedby={nameError ? 'settings-display-name-error' : undefined}
+                    />
+                    {nameDirty && (
+                      <button
+                        type="button"
+                        className="dash-btn-pill dash-pill--yellow settings-name-save"
+                        disabled={savingName}
+                        onClick={saveDisplayName}
+                      >
+                        {savingName ? 'Saving…' : 'Save'}
+                      </button>
+                    )}
+                  </div>
                   {nameError && (
                     <p id="settings-display-name-error" className="settings-field-error" role="alert">
                       {nameError}

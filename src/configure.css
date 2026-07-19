@@ -9,7 +9,7 @@
 }
 
 .configure-main--narrow {
-  max-width: 42rem;
+  max-width: 54rem;
 }
 
 .configure-center {
@@ -123,6 +123,10 @@
 
 .configure-card-actions {
   margin-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 /* Draft cards: the whole card is a link, so the delete control is an overlaid sibling
@@ -190,12 +194,20 @@
 
 .configure-steps {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--sp-2) var(--sp-3);
   list-style: none;
-  padding: 0;
+  padding: 0 0 4px;
   margin: 0 0 var(--sp-6);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.configure-steps::-webkit-scrollbar {
+  display: none;
+}
+.configure-step {
+  flex-shrink: 0;
 }
 
 .configure-step {
@@ -411,6 +423,10 @@
   color: rgba(30, 30, 30, 0.5);
   margin: 0 0 0.6rem;
 }
+/* Gap above the "Switching templates replaces…" note (below the template cards). */
+.configure-trait-template .configure-muted {
+  margin-top: 1rem;
+}
 
 .configure-link-danger {
   background: none;
@@ -437,13 +453,69 @@
   box-shadow: 0 0 0 1px var(--danger, #b42318);
 }
 
+/* Experience step — selectable option cards + toggle-style rows (was plain radios/checkboxes). */
+.configure-experience fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  grid-column: span 2;
+}
+.configure-experience legend {
+  padding: 0;
+  margin: 0 0 0.65rem;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
 .configure-radio,
 .configure-checkbox {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   font-weight: 500;
-  margin: 0.35rem 0;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.configure-radio + .configure-radio {
+  margin-top: 0.5rem;
+}
+.configure-radio:hover,
+.configure-checkbox:hover {
+  border-color: rgba(30, 30, 30, 0.22);
+}
+.configure-radio:has(input:checked) {
+  border-color: var(--brand-charcoal);
+  background: var(--brand-yellow-soft);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+.configure-radio input[type='radio'],
+.configure-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--brand-charcoal);
+  cursor: pointer;
+}
+/* Override .configure-form-grid label { flex-direction: column } (higher specificity) so the
+   control sits inline with its text instead of stacking centered. */
+.configure-experience .configure-radio {
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: left;
+}
+/* Checkbox rows read as toggles: label left, control right. */
+.configure-experience .configure-checkbox {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  text-align: left;
 }
 
 .configure-review {
@@ -583,4 +655,35 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+/* Assign step — saved-cohort picker (one click adds all members to the selection). */
+.configure-cohort-list {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.configure-cohort-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-subtle, rgba(30, 30, 30, 0.08));
+  border-radius: 14px;
+  background: #fff;
+}
+.configure-cohort-info {
+  display: flex;
+  flex-direction: column;
+}
+.configure-cohort-name {
+  font-weight: 600;
+}
+.configure-cohort-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted, #5f6670);
 }

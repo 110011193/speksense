@@ -724,3 +724,136 @@ a.profile-todo-item:hover::after {
     justify-content: flex-end;
   }
 }
+
+/* ── People view tabs (Directory / Cohorts) ─────────────────────────────── */
+.people-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.people-tab {
+  border: 1px solid var(--border-subtle, rgba(30, 30, 30, 0.08));
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text-muted, #5f6670);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.people-tab--active {
+  background: var(--brand-charcoal, #1a1a1a);
+  border-color: var(--brand-charcoal, #1a1a1a);
+  color: #fff;
+}
+
+/* ── Cohorts management ─────────────────────────────────────────────────── */
+.cohorts-create {
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.cohorts-create-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.cohorts-create-hint {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-muted, #5f6670);
+}
+.cohorts-create-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.cohorts-name-input {
+  flex: 1 1 240px;
+  min-width: 200px;
+  padding: 0.6rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(30, 30, 30, 0.14));
+  background: #fff;
+  font: inherit;
+}
+.cohorts-upload-btn {
+  cursor: pointer;
+}
+.cohorts-upload-btn.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.cohorts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.cohorts-item {
+  padding: 1rem 1.25rem;
+}
+.cohorts-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cohorts-item-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.cohorts-item-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted, #5f6670);
+}
+.cohorts-item-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.cohorts-danger {
+  border: none;
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.cohorts-danger:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+.cohorts-members {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dotted rgba(0, 0, 0, 0.12);
+}
+.cohorts-member-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.4rem 1rem;
+}
+.cohorts-member {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+}
+.cohorts-member-name {
+  font-weight: 600;
+}
+.cohorts-member-email {
+  color: var(--text-muted, #5f6670);
+  font-size: 0.78rem;
+}

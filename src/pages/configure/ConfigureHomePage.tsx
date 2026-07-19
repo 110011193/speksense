@@ -143,6 +143,39 @@ export function ConfigureHomePage() {
                     <Link to={`/configure/${d.id}/assign`} className="dash-btn-pill dash-btn-pill--light">
                       Manage
                     </Link>
+                    {(d.assignmentCount ?? 0) === 0 ? (
+                      confirmingId === d.id ? (
+                        <>
+                          <button
+                            type="button"
+                            className="configure-card-delete-btn"
+                            disabled={deletingId === d.id}
+                            onClick={() => void handleDelete(d)}
+                          >
+                            {deletingId === d.id ? 'Deleting…' : 'Confirm delete'}
+                          </button>
+                          <button
+                            type="button"
+                            className="configure-card-delete-btn configure-card-delete-btn--ghost"
+                            onClick={() => setConfirmingId(null)}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          className="configure-card-delete-btn"
+                          aria-label={`Delete ${d.title || 'assessment'}`}
+                          onClick={() => {
+                            setActionError(null);
+                            setConfirmingId(d.id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      )
+                    ) : null}
                   </div>
                 </article>
               </li>

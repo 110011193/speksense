@@ -958,7 +958,7 @@ function ExperienceStep({
     );
   }
   return (
-    <div className="configure-panel configure-form-grid">
+    <div className="configure-panel configure-form-grid configure-experience">
       <fieldset className="configure-span-2">
         <legend>Statement layout</legend>
         <label className="configure-radio">

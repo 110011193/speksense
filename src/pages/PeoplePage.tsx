@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AppHeader } from '../components/AppHeader';
+import { CohortsPanel } from '../components/CohortsPanel';
 import { EmptyState, ErrorNote } from '../components/EmptyState';
 import { SkeletonCard } from '../components/Skeleton';
 import {
@@ -14,12 +15,14 @@ import {
 } from '../api/services/peopleDirectory';
 import { downloadUserImportTemplate, parseUserUpload } from '../components/configure/excelImport';
 import type { OrgPerson, OrgPersonRow, PeopleStats } from '../api/types';
-import { isAdminUser } from '../utils/sessionUser';
+import { isAdminUser, isManager } from '../utils/sessionUser';
 
 const PAGE_SIZES = [25, 50, 100];
 
 export function PeoplePage() {
   const admin = isAdminUser();
+  const manager = isManager();
+  const canView = admin || manager;
   const [rows, setRows] = useState<OrgPersonRow[]>([]);
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<PeopleStats | null>(null);
@@ -31,6 +34,7 @@ export function PeoplePage() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [view, setView] = useState<'directory' | 'cohorts'>('directory');
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Debounce the search box; reset to page 1 whenever the term changes.
@@ -71,14 +75,14 @@ export function PeoplePage() {
   }, []);
 
   useEffect(() => {
-    if (admin) void load();
+    if (canView) void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [admin, page, pageSize, debouncedQuery]);
+  }, [canView, page, pageSize, debouncedQuery]);
 
   useEffect(() => {
-    if (admin) void loadStats();
+    if (canView) void loadStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [admin]);
+  }, [canView]);
 
   // Refresh both the current page and the org-wide stats after a mutation.
   function reload() {
@@ -86,7 +90,7 @@ export function PeoplePage() {
     void loadStats();
   }
 
-  if (!admin) return <Navigate to="/assessments" replace />;
+  if (!canView) return <Navigate to="/assessments" replace />;
 
   const kpis = {
     total: stats?.total ?? 0,
@@ -152,18 +156,26 @@ export function PeoplePage() {
         <header className="people-hero">
           <div>
             <h1 className="people-title">People</h1>
-            <p className="people-sub">Your organisation directory and assessment participation.</p>
+            <p className="people-sub">
+              {manager
+                ? 'Your department directory and assessment participation.'
+                : 'Your organisation directory and assessment participation.'}
+            </p>
           </div>
           <div className="people-hero-actions">
-            <button type="button" className="dash-btn-pill dash-btn-pill--light" onClick={() => downloadUserImportTemplate()}>
-              Template
-            </button>
-            <button type="button" className="dash-btn-pill dash-btn-pill--light" onClick={() => fileRef.current?.click()}>
-              Import
-            </button>
-            <button type="button" className="dash-btn-pill dash-pill--yellow" onClick={() => setShowAdd((s) => !s)}>
-              Add person
-            </button>
+            {admin && view === 'directory' ? (
+              <>
+                <button type="button" className="dash-btn-pill dash-btn-pill--light" onClick={() => downloadUserImportTemplate()}>
+                  Template
+                </button>
+                <button type="button" className="dash-btn-pill dash-btn-pill--light" onClick={() => fileRef.current?.click()}>
+                  Import
+                </button>
+                <button type="button" className="dash-btn-pill dash-pill--yellow" onClick={() => setShowAdd((s) => !s)}>
+                  Add person
+                </button>
+              </>
+            ) : null}
             <input
               ref={fileRef}
               type="file"
@@ -178,6 +190,33 @@ export function PeoplePage() {
           </div>
         </header>
 
+        {admin ? (
+          <div className="people-tabs" role="tablist" aria-label="People views">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'directory'}
+              className={`people-tab${view === 'directory' ? ' people-tab--active' : ''}`}
+              onClick={() => setView('directory')}
+            >
+              Directory
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'cohorts'}
+              className={`people-tab${view === 'cohorts' ? ' people-tab--active' : ''}`}
+              onClick={() => setView('cohorts')}
+            >
+              Cohorts
+            </button>
+          </div>
+        ) : null}
+
+        {admin && view === 'cohorts' ? (
+          <CohortsPanel />
+        ) : (
+        <>
         <section className="people-kpis" aria-label="Directory summary">
           <Kpi label="Total people" value={kpis.total} />
           <Kpi label="Active" value={kpis.active} variant="up" />
@@ -187,7 +226,7 @@ export function PeoplePage() {
 
         {notice ? <p className="people-notice" role="status">{notice}</p> : null}
         {error ? <ErrorNote message={error} /> : null}
-        {showAdd ? <AddPersonForm onCreated={() => { setShowAdd(false); reload(); }} onError={setError} /> : null}
+        {admin && showAdd ? <AddPersonForm onCreated={() => { setShowAdd(false); reload(); }} onError={setError} /> : null}
 
         <input
           type="search"
@@ -203,10 +242,16 @@ export function PeoplePage() {
         ) : rows.length === 0 ? (
           <EmptyState
             icon="👥"
-            title={debouncedQuery ? 'No matches' : 'No people yet'}
-            message={debouncedQuery ? 'Try a different search.' : 'Add people or import a spreadsheet to build your directory.'}
-            actionLabel={debouncedQuery ? undefined : 'Add person'}
-            onAction={debouncedQuery ? undefined : () => setShowAdd(true)}
+            title={debouncedQuery ? 'No matches' : manager ? 'No one in your department yet' : 'No people yet'}
+            message={
+              debouncedQuery
+                ? 'Try a different search.'
+                : manager
+                  ? 'People assigned to your department will appear here.'
+                  : 'Add people or import a spreadsheet to build your directory.'
+            }
+            actionLabel={admin && !debouncedQuery ? 'Add person' : undefined}
+            onAction={admin && !debouncedQuery ? () => setShowAdd(true) : undefined}
           />
         ) : (
           <div className="people-table-wrap" role="region" aria-label="People">
@@ -235,12 +280,12 @@ export function PeoplePage() {
                     </td>
                     <td data-label="Assessments" className="num">{p.assignments}</td>
                     <td className="people-row-action">
-                      {p.status === 'invited' ? (
+                      {admin && p.status === 'invited' ? (
                         <button type="button" className="dash-btn-pill dash-btn-pill--light people-link-btn" onClick={() => onActivation(p)}>
                           Activation link
                         </button>
                       ) : null}
-                      {p.assignments === 0 ? (
+                      {admin && p.assignments === 0 ? (
                         <button
                           type="button"
                           className="dash-btn-pill dash-btn-pill--light people-link-btn people-delete-btn"
@@ -299,6 +344,8 @@ export function PeoplePage() {
             </div>
           </nav>
         ) : null}
+        </>
+        )}
       </main>
     </div>
   );

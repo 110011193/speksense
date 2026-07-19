@@ -8,7 +8,9 @@ import { SurveyPage } from './pages/assessments/SurveyPage';
 import { ThankYouPage } from './pages/assessments/ThankYouPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PeoplePage } from './pages/PeoplePage';
+import { PlatformPage } from './pages/PlatformPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { TeamPage } from './pages/TeamPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ConfigureHomePage } from './pages/configure/ConfigureHomePage';
@@ -21,6 +23,8 @@ export function App() {
       <Route path="/" element={<AppHomeRedirect />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/people" element={<PeoplePage />} />
+      <Route path="/team" element={<TeamPage />} />
+      <Route path="/platform" element={<PlatformPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/reports" element={<ReportsPage />} />

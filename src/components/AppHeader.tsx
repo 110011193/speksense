@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { isAdminUser, signOutUser } from '../utils/sessionUser';
+import { isAdminUser, isManager, isSuperAdmin, signOutUser } from '../utils/sessionUser';
 import { BrandLogo } from './BrandLogo';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 import { NotificationsPanel } from './NotificationsPanel';
@@ -14,7 +14,11 @@ export function AppHeader() {
   const onProfile = location.pathname === '/profile';
   const onSettings = location.pathname === '/settings';
   const hrAdmin = isAdminUser();
-  const homePath = hrAdmin ? '/dashboard' : '/assessments';
+  const platformAdmin = isSuperAdmin();
+  const manager = isManager();
+  // Managers get a read-only Dashboard + People (department-scoped), but none of the admin tools.
+  const seesDashboard = hrAdmin || manager;
+  const homePath = seesDashboard ? '/dashboard' : '/assessments';
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const notifBtnRef = useRef<HTMLButtonElement>(null);
@@ -33,15 +37,15 @@ export function AppHeader() {
     <header className="dash-nav">
       <BrandLogo to={homePath} />
       <nav className="dash-nav-links" aria-label="Main">
-          {hrAdmin && (
+          {seesDashboard && (
             <NavLink to="/dashboard" end className={navClass}>
               Dashboard
             </NavLink>
           )}
-          {hrAdmin && (
-            <a href="/people" className="dash-nav-link">
+          {seesDashboard && (
+            <NavLink to="/people" className={navClass}>
               People
-            </a>
+            </NavLink>
           )}
           <NavLink to="/assessments" className={navClass}>
             Assessments
@@ -57,6 +61,16 @@ export function AppHeader() {
           {hrAdmin && (
             <NavLink to="/configure" className={navClass}>
               Configure
+            </NavLink>
+          )}
+          {hrAdmin && (
+            <NavLink to="/team" className={navClass}>
+              Team
+            </NavLink>
+          )}
+          {platformAdmin && (
+            <NavLink to="/platform" className={navClass}>
+              Platform
             </NavLink>
           )}
         </nav>
