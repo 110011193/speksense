@@ -584,3 +584,237 @@ body {
     gap: 10px;
   }
 }
+
+/* ================================================================
+   Split login layout (index.html only — signup keeps the centered
+   card). Brand story on the left, glass sign-in card on the right,
+   logo chip pinned to the page's top-left corner.
+   ================================================================ */
+
+.page.login-split {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+/* No scrim — the background photo stays untouched; both panels carry
+   their own frosted glass for legibility instead. */
+
+/* --- Logo chip, top-left corner of the page --- */
+.page-brand {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 11px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  text-decoration: none;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.page-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+}
+
+.page-brand-logo {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.page-brand-name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* --- Two-column shell --- */
+.split-layout {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+  padding: 112px clamp(24px, 4.5vw, 56px) 56px;
+}
+
+/* --- Left: brand story, on its own frosted-glass panel (photo untouched) --- */
+.brand-panel {
+  color: var(--ink);
+  max-width: 600px;
+  padding: clamp(28px, 3.2vw, 44px);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+}
+
+.brand-eyebrow {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 215, 71, 0.38);
+  border: 1px solid rgba(163, 122, 0, 0.35);
+  color: #6e5200;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.brand-headline {
+  font-size: clamp(2rem, 3.4vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.brand-copy {
+  font-size: 1.03rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 48ch;
+}
+
+.brand-features {
+  list-style: none;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.brand-feature-icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(255, 215, 71, 0.42);
+  border: 1px solid rgba(163, 122, 0, 0.28);
+  color: #5c4400;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.10);
+}
+
+.brand-feature strong {
+  display: block;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.brand-feature small {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* --- Right: the sign-in card --- */
+.card-panel {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-split .auth-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* --- Entrance animation (skipped for reduced-motion users) --- */
+@media (prefers-reduced-motion: no-preference) {
+  .brand-panel > * {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: login-rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+  .brand-panel > *:nth-child(2) { animation-delay: 0.08s; }
+  .brand-panel > *:nth-child(3) { animation-delay: 0.16s; }
+  .brand-panel > *:nth-child(4) { animation-delay: 0.24s; }
+
+  .login-split .auth-card {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: login-rise 0.65s 0.18s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+}
+
+@keyframes login-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive: stack, card first-class citizen --- */
+@media (max-width: 960px) {
+  .split-layout {
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: center;
+    gap: 36px;
+    padding: 104px 20px 44px;
+  }
+
+  .brand-panel {
+    text-align: center;
+    max-width: 560px;
+  }
+
+  .brand-copy {
+    margin: 0 auto;
+  }
+
+  .brand-features {
+    display: none;
+  }
+
+  .card-panel {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-brand {
+    top: 16px;
+    left: 16px;
+  }
+
+  .split-layout {
+    padding-top: 88px;
+  }
+
+  .brand-headline br {
+    display: none;
+  }
+}
